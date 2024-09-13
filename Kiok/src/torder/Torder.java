@@ -8,6 +8,7 @@ import java.awt.Label;
 import java.awt.Panel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -16,10 +17,16 @@ import javax.swing.JScrollPane;
 
 public class Torder {
 	public static void main(String[] args) {
+		
 		Frame f = new Frame();
 		f.setLayout(null);                   
 		f.setBounds(200, 170, 1500, 750);     //마스터 오더 창 크기 
 		f.setBackground(new Color(13,13,13)); //마스터 오더 창 색상
+		
+		Frame mf = new Frame();
+		mf.setLayout(null);
+		mf.setBounds(380, 270, 1005, 630);
+		mf.setBackground(Color.BLACK);
 		
 		Panel ui_top = new Panel(); //상단 ui
 		ui_top.setBounds(0, 25, 1000, 10);
@@ -54,16 +61,18 @@ public class Torder {
 //- ------------------------------------ 메인 메뉴 ---------------------------------------
 		JButton main_menu1 = new JButton("<HTML>한우타다끼<br>28000원</HTML>",
 										new ImageIcon("img/한우타다끼.png"));
-		main_menu1.setBounds(200, 100, 280, 250);
+		main_menu1.setBounds(30, 0, 280, 250);
 		main_menu1.setVerticalTextPosition(JButton.BOTTOM);			// 텍스트 가운데
 		main_menu1.setHorizontalTextPosition(JButton.CENTER);		// 텍스트 아래로
 		main_menu1.setForeground(Color.WHITE);
+//		main_menu1.setHorizontalAlignment(JButton.CENTER);
 		main_menu1.setBorderPainted(false);
 		main_menu1.setContentAreaFilled(false);
 		
+		
 		JButton main_menu2 = new JButton("<HTML>밀푀유나베<br>28000원</HTML>",
 				new ImageIcon("img/밀푀유나베.jpg"));
-		main_menu2.setBounds(535, 100, 280, 250);
+		main_menu2.setBounds(365, 0, 280, 250);
 		main_menu2.setVerticalTextPosition(JButton.BOTTOM);
 		main_menu2.setHorizontalTextPosition(JButton.CENTER);
 		main_menu2.setForeground(Color.WHITE);
@@ -72,7 +81,7 @@ public class Torder {
 		
 		JButton main_menu3 = new JButton("<HTML>차돌숙주볶음<br>24000원</HTML>",
 				new ImageIcon("img/차돌숙주볶음.jpg"));
-		main_menu3.setBounds(870, 100, 280, 250);
+		main_menu3.setBounds(700, 0, 280, 250);
 		main_menu3.setVerticalTextPosition(JButton.BOTTOM);
 		main_menu3.setHorizontalTextPosition(JButton.CENTER);
 		main_menu3.setForeground(Color.WHITE);
@@ -106,17 +115,78 @@ public class Torder {
 		main_menu6.setBorderPainted(false);
 		main_menu6.setContentAreaFilled(false);
 	
-		f.add(main_menu1);
-		f.add(main_menu2);
-		f.add(main_menu3);
-		f.add(main_menu4);
-		f.add(main_menu5);
-		f.add(main_menu6);
+		mf.add(main_menu1);
+		mf.add(main_menu2);
+		mf.add(main_menu3);
+//		ui_middle.add(main_menu4);
+//		ui_middle.add(main_menu5);
+//		ui_middle.add(main_menu6);
 		
 // ------------------------------------ 사이드 메뉴 --------------------------------------
 		
+		JButton side_menu1 = new JButton("<HTML>계란말이<br>15000원</HTML>",
+				new ImageIcon("img/계란말이.jpg"));
+		side_menu1.setBounds(200, 660, 280, 250);
+		side_menu1.setVerticalTextPosition(JButton.BOTTOM);
+		side_menu1.setHorizontalTextPosition(JButton.CENTER);
+		side_menu1.setForeground(Color.WHITE);
+		side_menu1.setBorderPainted(false);
+		side_menu1.setContentAreaFilled(false);
+	
+		JButton side_menu2 = new JButton("<HTML>고구마튀김<br>13000원</HTML>",
+				new ImageIcon("img/고구마튀김.jpg"));
+		side_menu2.setBounds(535, 660, 280, 250);
+		side_menu2.setVerticalTextPosition(JButton.BOTTOM);
+		side_menu2.setHorizontalTextPosition(JButton.CENTER);
+		side_menu2.setForeground(Color.WHITE);
+		side_menu2.setBorderPainted(false);
+		side_menu2.setContentAreaFilled(false);
 		
+		JButton side_menu3 = new JButton("<HTML>문어튀김<br>26000원</HTML>",
+				new ImageIcon("img/문어튀김.jpg"));
+		side_menu3.setBounds(870, 660, 280, 250);
+		side_menu3.setVerticalTextPosition(JButton.BOTTOM);
+		side_menu3.setHorizontalTextPosition(JButton.CENTER);
+		side_menu3.setForeground(Color.WHITE);
+		side_menu3.setBorderPainted(false);
+		side_menu3.setContentAreaFilled(false);
 		
+		JButton side_menu4 = new JButton("<HTML>숯불꼬치<br>29000원</HTML>",
+				new ImageIcon("img/숯불꼬치.jpg"));
+		side_menu4.setBounds(200, 940, 280, 250);
+		side_menu4.setVerticalTextPosition(JButton.BOTTOM);
+		side_menu4.setHorizontalTextPosition(JButton.CENTER);
+		side_menu4.setForeground(Color.WHITE);
+		side_menu4.setBorderPainted(false);
+		side_menu4.setContentAreaFilled(false);
+		
+		JButton side_menu5 = new JButton("<HTML>타코와사비<br>29000원</HTML>",
+				new ImageIcon("img/타코와사비.jpg"));
+		side_menu5.setBounds(535, 940, 280, 250);
+		side_menu5.setVerticalTextPosition(JButton.BOTTOM);
+		side_menu5.setHorizontalTextPosition(JButton.CENTER);
+		side_menu5.setForeground(Color.WHITE);
+		side_menu5.setBorderPainted(false);
+		side_menu5.setContentAreaFilled(false);
+		
+		JButton side_menu6 = new JButton("<HTML>해물떡볶이<br>26000원</HTML>",
+				new ImageIcon("img/해물떡볶이.jpg"));
+		side_menu6.setBounds(870, 940, 280, 250);
+		side_menu6.setVerticalTextPosition(JButton.BOTTOM);
+		side_menu6.setHorizontalTextPosition(JButton.CENTER);
+		side_menu6.setForeground(Color.WHITE);
+		side_menu6.setBorderPainted(false);
+		side_menu6.setContentAreaFilled(false);
+		
+//		ui_middle.add(side_menu1);
+//		ui_middle.add(side_menu2);
+//		ui_middle.add(side_menu3);
+//		ui_middle.add(side_menu4);
+//		ui_middle.add(side_menu5);
+//		ui_middle.add(side_menu6);
+	
+		
+// ----------------------------------------------------------------------------------------	
 	
 		
 						
@@ -128,6 +198,13 @@ public class Torder {
 				System.exit(0);
 			}
 		}); 
+		
+		mf.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
 
 		f.add(ui_top); //상단 ui 패널
 		f.add(top_logo);
@@ -135,8 +212,9 @@ public class Torder {
 		f.add(call);
 		f.add(m_menu);
 		f.add(s_menu);
+		
 		f.setVisible(true);
-
+		mf.setVisible(true);
 		
 		
 	}// main
