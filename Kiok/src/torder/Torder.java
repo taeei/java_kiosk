@@ -18,6 +18,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,6 +30,14 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
 public class Torder extends JFrame{
+	
+	// 버튼 클릭 횟수
+	static int mainCnt[] = new int[6];
+	static int sideCnt[] = new int[6];
+	static Frame bf = new Frame("장바구니");
+	static JPanel bp = new JPanel();
+	static String[] mainName;
+	
 	public static void main(String[] args) {
 		
 		
@@ -68,15 +77,15 @@ public class Torder extends JFrame{
 		call.setBackground(new Color(242, 5, 5));
 		call.setBounds(30, 670, 150, 50);
 		
-// ----------------------- 메뉴 프레임 ---------------------------	
+// ------------------------------- 메뉴 프레임 --------------------------------	
 		
 		JFrame mf = new JFrame("메뉴");
 		mf.setBounds(380, 270, 1005, 630);
 		mf.setBackground(Color.BLACK);
 		
 		// JPanel 생성
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(0, 3)); // 수직으로 버튼 배치
+		JPanel mp = new JPanel();
+		mp.setLayout(new GridLayout(0, 3)); // 수직으로 버튼 배치
 		
 		//메뉴 이름과 가격
 		String[] mainName = {"<HTML>가라아게<br>23000원</HTML>", 
@@ -93,38 +102,63 @@ public class Torder extends JFrame{
 				"<HTML>타코와사비<br>29000원</HTML>",
 		"<HTML>해물떡볶이<br>26000원</HTML>"};
 		
+		// 버튼 배열
+		JButton[] main_btn = new JButton[mainName.length];
+		JButton[] side_btn = new JButton[sideName.length];
+		
 		// 이미지 아이콘 경로
 		String mainImagePath = "C:\\Users\\user1\\Desktop\\메인메뉴\\image";
 		String sideImagePath = "C:\\Users\\user1\\Desktop\\사이드메뉴\\image";
 		
 		
+		
 		// 메인 메뉴 버튼 생성
-		for (int i = 0; i < 6; i++) {
-			JButton main_btn = new JButton(mainName[i],
+		for (int i = 0; i < mainName.length; i++) {
+			
+			main_btn[i] = new JButton(mainName[i],
 					new ImageIcon(mainImagePath + (i % 4 + 1) + ".jpg"));
-			panel.add(main_btn);
-			main_btn.setBorder(BorderFactory.createEmptyBorder(15, 20, 100, 20));
-			main_btn.setBackground(Color.BLACK);
-			main_btn.setVerticalTextPosition(JButton.BOTTOM);			// 텍스트 위치 가운데
-			main_btn.setHorizontalTextPosition(JButton.CENTER);		// 텍스트 위치 아래로
-			main_btn.setForeground(Color.WHITE);
-		}
+			mp.add(main_btn[i]);
+			main_btn[i].setBorder(BorderFactory.createEmptyBorder(15, 20, 100, 20));
+			main_btn[i].setBackground(Color.BLACK);
+			main_btn[i].setVerticalTextPosition(JButton.BOTTOM);			// 텍스트 위치 가운데
+			main_btn[i].setHorizontalTextPosition(JButton.CENTER);		// 텍스트 위치 아래로
+			main_btn[i].setForeground(Color.WHITE);	
+			
+			int num = i; 	// 감지자 안에서 사용하기 위해서 지정
+			
+			// 메인메뉴 버튼 감지자
+			main_btn[i].addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					mainCnt[num]++;
+					
+					updateMainCnt();
+					f.toBack();
+				}
+			});
+			
+		}//for
 		
 		// 사이드 메뉴 버튼 생성
-		for (int i = 0; i < 6; i++) {
-			JButton side_btn = new JButton(sideName[i],
+		for (int i = 0; i < sideName.length; i++) {
+			side_btn[i] = new JButton(sideName[i],
 					new ImageIcon(sideImagePath + (i % 4 + 1) + ".jpg")); 
-			panel.add(side_btn);
-			side_btn.setBorder(BorderFactory.createEmptyBorder(15, 20, 100, 20));
-			side_btn.setBackground(Color.BLACK);
-			side_btn.setVerticalTextPosition(JButton.BOTTOM);			
-			side_btn.setHorizontalTextPosition(JButton.CENTER);	
-			side_btn.setForeground(Color.WHITE);
+			mp.add(side_btn[i]);
+			side_btn[i].setBorder(BorderFactory.createEmptyBorder(15, 20, 100, 20));
+			side_btn[i].setBackground(Color.BLACK);
+			side_btn[i].setVerticalTextPosition(JButton.BOTTOM);			
+			side_btn[i].setHorizontalTextPosition(JButton.CENTER);	
+			side_btn[i].setForeground(Color.WHITE);
+		
 		}
+		
+		initializeFrame2();
 		
 		
 		// JScrollPane 생성
-		JScrollPane scroll = new JScrollPane(panel);
+		JScrollPane scroll = new JScrollPane(mp);
 		scroll.setPreferredSize(new Dimension(1005, 630)); // 스크롤 초기 설정 크기
 		
 		
@@ -143,6 +177,7 @@ public class Torder extends JFrame{
 			}
 		});
 		
+	
 		// 사이드 메뉴 버튼 감지자
 		s_menu.addActionListener(new ActionListener() {
 			
@@ -150,24 +185,61 @@ public class Torder extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				scroll.getViewport().setViewPosition(new Point(0, 700));
 				f.toBack();
+
 			}
 		});
 		
+		
+		
+//		// 메인메뉴 버튼 감지자
+//		for(int i = 0;  i < mainName.length; i++) {
+//			
+//			int num = i;
+//			
+//			main_btn[i].addActionListener(new ActionListener() {
+//				
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					
+//					mainCnt[num]++;
+//			
+//				} 
+//			});
+//			
+//		}
+//		for (int i = 0; i < mainCnt.length; i++) {
+//			System.out.println(mainCnt[i]);
+//		}
+		
+		
+		
 // ------------------------------------ 장바구니 프레임 --------------------------------
 		
-		Frame bf = new Frame("장바구니");
-		bf.setLayout(null);
-		bf.setBounds(1375, 270, 320, 630);
-		bf.setBackground(Color.BLACK);
+//		Frame bf = new Frame("장바구니");
+//		bf.setLayout(null);
+//		bf.setBounds(1375, 270, 320, 630);
+//		bf.setBackground(Color.BLACK);
+		
+//		JPanel bp = new JPanel();
+//		bp.setBounds(15, 115, 290, 425);
+//		bp.setBackground(Color.WHITE);
 		
 		JButton btn_pay = new JButton("주문하기");
 		btn_pay.setBounds(15, 40, 290, 70);
+		btn_pay.setFont(menu);
 		
 		JButton reset = new JButton("장바구니 비우기");
 		reset.setBounds(15, 545, 290, 70);
+		reset.setFont(menu);
 		
+		bf.add(bp);
 		bf.add(btn_pay);
 		bf.add(reset);
+		
+		JScrollPane scroll2 = new JScrollPane(bp);
+		scroll2.setPreferredSize(new Dimension(290, 425)); // 스크롤 초기 설정 크기
+				
+		bf.add(scroll2);
 		
 		
 ////-------------------------------------- 메인 메뉴 ---------------------------------------
@@ -333,9 +405,39 @@ public class Torder extends JFrame{
 		
 		f.setVisible(true);
 		mf.setVisible(true);
-		bf.setVisible(true);
+//		bf.setVisible(true);
+//		bp.setVisible(true);
 		
 		
 	}// main
+	
+	// 두 번째 프레임과 레이블 초기화
+		private static void initializeFrame2() {
+			bf = new JFrame("장바구니");
+
+			bp = new JPanel();
+			bp.setLayout(new BoxLayout(bp, BoxLayout.Y_AXIS)); // 세로로 배치
+
+			bf.add(bp);
+			bf.setBounds(1375, 270, 320, 630);
+			bf.setVisible(true); // 초기화 후 보이게 함
+		}
+	
+	// 메인메뉴 클릭 횟수 카운트 메서드
+	public static void updateMainCnt() {
+		
+		for(int i = 0; i < mainCnt.length; i++) {
+			
+			if(mainCnt[i] > 0) {
+				JLabel label = new JLabel(i + ":" + mainCnt[i]);
+				bf.add(label);
+			}
+			
+		}// for
+		
+		bf.revalidate(); // 레이아웃 갱신
+		bf.repaint(); // 재화면 갱신
+		
+	}//updateMainCnt
 	
 }
